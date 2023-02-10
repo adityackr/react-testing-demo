@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import LoginForm from './components/login-form';
+import LoginForm from './components/loginForm';
 import Button from './components/shared/ui/Button';
+import Heading from './components/shared/ui/Heading';
 
 const initialLoginInfo = {
 	username: '',
 	password: '',
 	isLoggedIn: false,
+	hasError: false,
 };
 
 const App = () => {
@@ -13,15 +15,23 @@ const App = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setLoginInfo((prev) => ({
-			...prev,
-			isLoggedIn: true,
-		}));
+		if (!loginInfo.username || !loginInfo.password) {
+			setLoginInfo((prev) => ({
+				...prev,
+				hasError: true,
+			}));
+		} else {
+			setLoginInfo((prev) => ({
+				...prev,
+				isLoggedIn: true,
+			}));
+		}
 	};
 
 	const handleChange = (e) => {
 		setLoginInfo((prev) => ({
 			...prev,
+			hasError: false,
 			[e.target.name]: e.target.value,
 		}));
 	};
@@ -34,8 +44,12 @@ const App = () => {
 		<div>
 			{loginInfo.isLoggedIn ? (
 				<div>
-					<h1>Logged in as {loginInfo.username}</h1>
-					<Button type={'button'} onClick={handleLogoutBtn}>
+					<Heading>Logged in as {loginInfo.username}</Heading>
+					<Button
+						style={{ margin: '0 auto', width: '8rem' }}
+						type={'button'}
+						onClick={handleLogoutBtn}
+					>
 						Logout
 					</Button>
 				</div>
@@ -44,6 +58,7 @@ const App = () => {
 					onSubmit={handleSubmit}
 					onChange={handleChange}
 					loginInfo={loginInfo}
+					error={loginInfo.hasError}
 				/>
 			)}
 		</div>

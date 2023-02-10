@@ -1,18 +1,15 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-	border: 1px solid teal;
-	color: teal;
-	background-color: transparent;
-	cursor: pointer;
-	width: 5rem;
-	padding: 0.5rem;
-	border-radius: 5px;
+	padding: 0.8rem;
+	border: 1px solid #ffc600;
 	display: block;
-	margin: 2rem auto;
+	width: 30%;
+	border-radius: 5px;
+	background-color: #ffc600;
+	cursor: pointer;
 	&:hover {
-		color: #fff;
-		background-color: teal;
+		background-color: transparent;
 	}
 `;
 
