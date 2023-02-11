@@ -2,6 +2,7 @@ import { useState } from 'react';
 import LoginForm from './components/loginForm';
 import Button from './components/shared/ui/Button';
 import Heading from './components/shared/ui/Heading';
+import users from './data/users';
 
 const initialLoginInfo = {
 	username: '',
@@ -15,17 +16,23 @@ const App = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (!loginInfo.username || !loginInfo.password) {
-			setLoginInfo((prev) => ({
-				...prev,
-				hasError: true,
-			}));
-		} else {
-			setLoginInfo((prev) => ({
-				...prev,
-				isLoggedIn: true,
-			}));
-		}
+		users.forEach((user) => {
+			if (
+				(loginInfo.username !== user.username ||
+					loginInfo.username !== user.email) &&
+				loginInfo.password !== user.password
+			) {
+				setLoginInfo((prev) => ({
+					...prev,
+					hasError: true,
+				}));
+			} else {
+				setLoginInfo((prev) => ({
+					...prev,
+					isLoggedIn: true,
+				}));
+			}
+		});
 	};
 
 	const handleChange = (e) => {

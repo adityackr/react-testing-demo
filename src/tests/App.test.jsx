@@ -2,6 +2,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it } from 'vitest';
 import App from '../App';
+import users from '../data/users';
+
+const user = users[0];
 
 describe('App', () => {
 	it('renders App component', () => {
@@ -32,17 +35,19 @@ describe('App', () => {
 
 		await userEvent.type(
 			screen.getByPlaceholderText('Enter your email or username'),
-			'aditya'
+			user.username
 		);
 		await userEvent.type(
 			screen.getByPlaceholderText('Enter your password'),
-			'Pass1234'
+			user.password
 		);
 		await userEvent.click(screen.getByRole('button'));
 
 		expect(screen.getByRole('heading')).toBeInTheDocument();
 		expect(screen.getByRole('button')).toBeInTheDocument();
-		expect(screen.getByText('Logged in as aditya')).toBeInTheDocument();
+		expect(
+			screen.getByText(`Logged in as ${user.username}`)
+		).toBeInTheDocument();
 		expect(screen.getByText('Logout')).toBeInTheDocument();
 
 		await userEvent.click(screen.getByText('Logout'));
