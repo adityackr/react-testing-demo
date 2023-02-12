@@ -28,7 +28,7 @@ describe('App', () => {
 	});
 
 	it('should should show error message if username or password is invalid', async () => {
-		axios.get.mockResolvedValue({ data: users });
+		axios.mockResolvedValue({ data: users });
 		render(<App />);
 
 		const loginButton = screen.getByRole('button');
