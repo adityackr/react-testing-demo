@@ -16,23 +16,23 @@ const App = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		users.forEach((user) => {
-			if (
-				(loginInfo.username !== user.username ||
-					loginInfo.username !== user.email) &&
-				loginInfo.password !== user.password
-			) {
-				setLoginInfo((prev) => ({
-					...prev,
-					hasError: true,
-				}));
-			} else {
-				setLoginInfo((prev) => ({
-					...prev,
-					isLoggedIn: true,
-				}));
-			}
-		});
+		const verified = users.filter(
+			(user) =>
+				loginInfo.username === user.username &&
+				loginInfo.password === user.password
+		);
+
+		if (verified.length > 0) {
+			setLoginInfo((prev) => ({
+				...prev,
+				isLoggedIn: true,
+			}));
+		} else {
+			setLoginInfo((prev) => ({
+				...prev,
+				hasError: true,
+			}));
+		}
 	};
 
 	const handleChange = (e) => {
