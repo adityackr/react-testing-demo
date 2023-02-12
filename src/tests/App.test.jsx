@@ -1,13 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it } from 'vitest';
+import axios from 'axios';
+import { describe, it, vi } from 'vitest';
 import App from '../App';
-import users from '../data/users';
+// import users from '../data/users';
 
-const user = users[0];
+vi.mock('axios');
+
+const users = [
+	{ username: 'aditya', password: 'Pass1234' },
+	{ username: 'john', password: 'Test1234' },
+];
 
 describe('App', () => {
 	it('renders App component', () => {
+		axios.get.mockResolvedValue({ data: users });
 		render(<App />);
 
 		expect(
@@ -21,6 +28,7 @@ describe('App', () => {
 	});
 
 	it('should should show error message if username or password is invalid', async () => {
+		axios.get.mockResolvedValue({ data: users });
 		render(<App />);
 
 		const loginButton = screen.getByRole('button');
@@ -31,22 +39,23 @@ describe('App', () => {
 	});
 
 	it('should logged in successfully and logged out when click the logout button', async () => {
+		axios.mockResolvedValue({ data: users });
 		render(<App />);
 
 		await userEvent.type(
 			screen.getByPlaceholderText('Enter your email or username'),
-			user.username
+			users[1].username
 		);
 		await userEvent.type(
 			screen.getByPlaceholderText('Enter your password'),
-			user.password
+			users[1].password
 		);
 		await userEvent.click(screen.getByRole('button'));
 
 		expect(screen.getByRole('heading')).toBeInTheDocument();
 		expect(screen.getByRole('button')).toBeInTheDocument();
 		expect(
-			screen.getByText(`Logged in as ${user.username}`)
+			screen.getByText(`Logged in as ${users[1].username}`)
 		).toBeInTheDocument();
 		expect(screen.getByText('Logout')).toBeInTheDocument();
 

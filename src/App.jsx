@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import LoginForm from './components/loginForm';
 import Button from './components/shared/ui/Button';
 import Heading from './components/shared/ui/Heading';
-import users from './data/users';
 
 const initialLoginInfo = {
 	username: '',
@@ -13,6 +13,14 @@ const initialLoginInfo = {
 
 const App = () => {
 	const [loginInfo, setLoginInfo] = useState(initialLoginInfo);
+	const [users, setUsers] = useState(null);
+
+	useEffect(() => {
+		axios
+			.get('https://fakestoreapi.com/users')
+			.then((res) => res.data)
+			.then((data) => setUsers(data));
+	}, []);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
